@@ -11,6 +11,11 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
+Robot::Robot(){
+  m_robotDrive.SetExpiration(0.1);
+  m_timer.Start();
+}
+
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
@@ -43,7 +48,8 @@ void Robot::AutonomousInit() {
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
   //     kAutoNameDefault);
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
-
+  m_timer.Reset();
+  m_timer.Start();
   if (m_autoSelected == kAutoNameCustom) {
     // Custom Auto goes here
   } else {
@@ -52,6 +58,11 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
+  if(m_timer.Get() < 2.0){
+    m_robotDrive.ArcadeDrive(-0.5,0.0);
+  }else{
+    m_robotDrive.ArcadeDrive(0.0,0.0);
+  }
   if (m_autoSelected == kAutoNameCustom) {
     // Custom Auto goes here
   } else {
@@ -61,9 +72,13 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  m_robotDrive.ArcadeDrive(m_stick.GetY(),m_stick.GetX());
+}
 
-void Robot::TestPeriodic() {}
+void Robot::TestPeriodic() {
+  
+}
 
 #ifndef RUNNING_FRC_TESTS
 int main() { return frc::StartRobot<Robot>(); }
