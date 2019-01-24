@@ -12,7 +12,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SendableChooser.h>
-#include <frc/PWMVictorSPX.hj>
+#include <frc/PWMVictorSPX.h>
 #include <frc/SpeedControllerGroup.h>
 #include <frc/Timer.h>
 #include <frc/drive/DifferentialDrive.h>
@@ -43,6 +43,6 @@ class Robot : public frc::TimedRobot {
   frc::SpeedControllerGroup m_right{m_flontRight,m_rearRight};
   frc::DifferentialDrive m_robotDrive{m_left,m_right};
   
-  frc::Joystick m_stick{0};
+  frc::Joystick m_stick{2};
   frc::Timer m_timer;
 };

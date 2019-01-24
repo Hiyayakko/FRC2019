@@ -11,12 +11,14 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-Robot::Robot(){
+Robot::Robot()
+{
   m_robotDrive.SetExpiration(0.1);
   m_timer.Start();
 }
 
-void Robot::RobotInit() {
+void Robot::RobotInit()
+{
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -43,43 +45,58 @@ void Robot::RobotPeriodic() {}
  * if-else structure below with additional strings. If using the SendableChooser
  * make sure to add them to the chooser code above as well.
  */
-void Robot::AutonomousInit() {
+void Robot::AutonomousInit()
+{
   m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
   //     kAutoNameDefault);
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
   m_timer.Reset();
   m_timer.Start();
-  if (m_autoSelected == kAutoNameCustom) {
+  if (m_autoSelected == kAutoNameCustom)
+  {
     // Custom Auto goes here
-  } else {
+  }
+  else
+  {
     // Default Auto goes here
   }
 }
 
-void Robot::AutonomousPeriodic() {
-  if(m_timer.Get() < 2.0){
-    m_robotDrive.ArcadeDrive(-0.5,0.0);
-  }else{
-    m_robotDrive.ArcadeDrive(0.0,0.0);
+void Robot::AutonomousPeriodic()
+{
+  if (m_timer.Get() < 2.0)
+  {
+    m_robotDrive.ArcadeDrive(-0.5, 0.0);
   }
-  if (m_autoSelected == kAutoNameCustom) {
+  else
+  {
+    m_robotDrive.ArcadeDrive(0.0, 0.0);
+  }
+  if (m_autoSelected == kAutoNameCustom)
+  {
     // Custom Auto goes here
-  } else {
+  }
+  else
+  {
     // Default Auto goes here
   }
 }
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {
-  m_robotDrive.ArcadeDrive(m_stick.GetY(),m_stick.GetX());
+void Robot::TeleopPeriodic()
+{
+  m_robotDrive.ArcadeDrive(m_stick.GetY(), m_stick.GetX());
 }
 
-void Robot::TestPeriodic() {
-  
+void Robot::TestPeriodic()
+{
 }
 
 #ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
+int main()
+{
+  return frc::StartRobot<Robot>();
+}
 #endif
