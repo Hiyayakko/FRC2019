@@ -16,7 +16,9 @@
 #include <frc/SpeedControllerGroup.h>
 #include <frc/Timer.h>
 #include <frc/drive/DifferentialDrive.h>
-
+#include <frc/Solenoid.h>
+#include <frc/DoubleSolenoid.h>
+#include <frc/Compressor.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -43,6 +45,10 @@ class Robot : public frc::TimedRobot {
   frc::SpeedControllerGroup m_right{m_flontRight,m_rearRight};
   frc::DifferentialDrive m_robotDrive{m_left,m_right};
   
+  frc::DoubleSolenoid sole0{0,1};
+
+  frc::Compressor com{0};
+
   frc::Joystick m_stick{2};
   frc::Timer m_timer;
 };
