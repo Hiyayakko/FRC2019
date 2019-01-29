@@ -19,6 +19,7 @@
 #include <frc/Solenoid.h>
 #include <frc/DoubleSolenoid.h>
 #include <frc/Compressor.h>
+#include <frc/DigitalInput.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -48,6 +49,8 @@ class Robot : public frc::TimedRobot {
   frc::DoubleSolenoid sole0{0,1};
 
   frc::Compressor com{0};
+
+  frc::DigitalInput pin0{0};
 
   frc::Joystick m_stick{2};
   frc::Timer m_timer;

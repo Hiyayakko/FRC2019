@@ -76,6 +76,11 @@ void Robot::AutonomousPeriodic()
     sole0.Set(frc::DoubleSolenoid::Value::kReverse);
     //m_robotDrive.ArcadeDrive(0.0, 0.0);
   }
+
+  if(pin0.Get() == false){
+      std::cout << "googogogo" << std::endl;
+  }
+
   if (m_autoSelected == kAutoNameCustom)
   {
     // Custom Auto goes here
