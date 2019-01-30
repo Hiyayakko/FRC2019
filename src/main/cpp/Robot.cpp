@@ -67,18 +67,9 @@ void Robot::AutonomousPeriodic()
 {
   if (m_timer.Get() < 10.0)
   {
-    com.SetClosedLoopControl(true);
-    //m_robotDrive.ArcadeDrive(-0.5, 0.0);
   }
   else
   {
-    com.SetClosedLoopControl(false);
-    sole0.Set(frc::DoubleSolenoid::Value::kReverse);
-    //m_robotDrive.ArcadeDrive(0.0, 0.0);
-  }
-
-  if(pin0.Get() == false){
-      std::cout << "googogogo" << std::endl;
   }
 
   if (m_autoSelected == kAutoNameCustom)
@@ -97,20 +88,6 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic()
 {
-  //m_robotDrive.ArcadeDrive(m_stick.GetY(), m_stick.GetX());
-  if(m_stick.GetY()>0.5){
-    sole0.Set(frc::DoubleSolenoid::Value::kForward);
-  }else if(m_stick.GetY()<-0.5){
-    sole0.Set(frc::DoubleSolenoid::Value::kReverse);
-  }else{
-    sole0.Set(frc::DoubleSolenoid::Value::kOff);
-  }
-
-  if(m_stick.GetX()>0.5){
-    com.SetClosedLoopControl(true);
-  }else if(m_stick.GetX()<-0.5){
-    com.SetClosedLoopControl(false);
-  }
 
 }
 

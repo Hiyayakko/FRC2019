@@ -37,21 +37,6 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
-
-  frc::PWMVictorSPX m_flontLeft{0};
-  frc::PWMVictorSPX m_rearLeft{1};
-  frc::SpeedControllerGroup m_left{m_flontLeft,m_rearLeft};
-  frc::PWMVictorSPX m_flontRight{2};
-  frc::PWMVictorSPX m_rearRight{3};
-  frc::SpeedControllerGroup m_right{m_flontRight,m_rearRight};
-  frc::DifferentialDrive m_robotDrive{m_left,m_right};
-  
-  frc::DoubleSolenoid sole0{0,1};
-
-  frc::Compressor com{0};
-
-  frc::DigitalInput pin0{0};
-
-  frc::Joystick m_stick{2};
   frc::Timer m_timer;
+  frc::BuiltInAccelerometer accel{kRange_8G};
 };
