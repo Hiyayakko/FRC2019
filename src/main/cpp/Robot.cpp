@@ -99,11 +99,13 @@ void Robot::TeleopPeriodic()
 {
   //m_robotDrive.ArcadeDrive(m_stick.GetY(), m_stick.GetX());
   if(m_stick.GetY()>0.5){
-    sole0.Set(frc::DoubleSolenoid::Value::kForward);
+    sole1.Set(true);
+    //sole0.Set(frc::DoubleSolenoid::Value::kForward);
   }else if(m_stick.GetY()<-0.5){
-    sole0.Set(frc::DoubleSolenoid::Value::kReverse);
+    sole1.Set(false);
+    //sole0.Set(frc::DoubleSolenoid::Value::kReverse);
   }else{
-    sole0.Set(frc::DoubleSolenoid::Value::kOff);
+    //sole0.Set(frc::DoubleSolenoid::Value::kOff);
   }
 
   if(m_stick.GetX()>0.5){

@@ -48,6 +48,8 @@ class Robot : public frc::TimedRobot {
   
   frc::DoubleSolenoid sole0{0,1};
 
+  frc::Solenoid sole1{2};
+  
   frc::Compressor com{0};
 
   frc::DigitalInput pin0{0};
