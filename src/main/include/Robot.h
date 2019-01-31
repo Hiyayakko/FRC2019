@@ -20,6 +20,7 @@
 #include <frc/DoubleSolenoid.h>
 #include <frc/Compressor.h>
 #include <frc/DigitalInput.h>
+#include <frc/BuiltInAccelerometer.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -38,5 +39,5 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
   frc::Timer m_timer;
-  frc::BuiltInAccelerometer accel{kRange_8G};
+  frc::BuiltInAccelerometer accel;
 };

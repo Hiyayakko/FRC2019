@@ -8,12 +8,12 @@
 #include "Robot.h"
 
 #include <iostream>
+#include <stdio.h>
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Robot::Robot()
 {
-  m_robotDrive.SetExpiration(0.1);
   m_timer.Start();
 }
 
@@ -67,9 +67,12 @@ void Robot::AutonomousPeriodic()
 {
   if (m_timer.Get() < 10.0)
   {
+    printf("X:%.4lf Y:%.4lf Z:%.4lf\n",accel.GetX(),accel.GetX(),accel.GetX());
+    //std::cout << "X:" << std::setw(4) << accel.GetX() << " Y:" << std::setw(4) << accel.GetY() << " Z:" << std::setw(4) << accel.GetZ() << std::endl;
   }
   else
   {
+
   }
 
   if (m_autoSelected == kAutoNameCustom)
@@ -83,7 +86,6 @@ void Robot::AutonomousPeriodic()
 }
 
 void Robot::TeleopInit() {
-  com.SetClosedLoopControl(false);
 }
 
 void Robot::TeleopPeriodic()
