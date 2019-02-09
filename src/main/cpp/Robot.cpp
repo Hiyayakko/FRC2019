@@ -22,6 +22,7 @@ void Robot::RobotInit()
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  m_shotLeft.SetInverted(true);
 }
 
 /**
@@ -97,24 +98,24 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic()
 {
-  //m_robotDrive.ArcadeDrive(-m_stick.GetY()*0.35, m_stick.GetX()*0.35);
+  //m_robotDrive.ArcadeDrive(-m _controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*0.35, m_controller.GetX(frc::XboxController::JoystickHand::kLeftHand)*0.35);
 
-  m_rightShot.Set(m_stick.GetY()*0.50);
+  m_shotRight.Set(m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*0.80);
 
   /*
-  if(m_stick.GetY()>0.5){
+  if(m_controller.GetY()>0.5){
     //sole1.Set(true);
     //sole0.Set(frc::DoubleSolenoid::Value::kForward);
-  }else if(m_stick.GetY()<-0.5){
+  }else if(m_controller.GetY()<-0.5){
     sole1.Set(false);
     //sole0.Set(frc::DoubleSolenoid::Value::kReverse);
   }else{
     //sole0.Set(frc::DoubleSolenoid::Value::kOff);
   }
 
-  if(m_stick.GetX()>0.5){
+  if(m_controller.GetX()>0.5){
     com.SetClosedLoopControl(true);
-  }else if(m_stick.GetX()<-0.5){
+  }else if(m_controller.GetX()<-0.5){
     com.SetClosedLoopControl(false);
   }
 */

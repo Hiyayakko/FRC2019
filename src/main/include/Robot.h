@@ -20,6 +20,7 @@
 #include <frc/DoubleSolenoid.h>
 #include <frc/Compressor.h>
 #include <frc/DigitalInput.h>
+#include <frc/XboxController.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -38,6 +39,7 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
 
+  //足回り
   frc::PWMVictorSPX m_flontLeft{0};
   frc::PWMVictorSPX m_rearLeft{1};
   frc::SpeedControllerGroup m_left{m_flontLeft,m_rearLeft};
@@ -46,8 +48,12 @@ class Robot : public frc::TimedRobot {
   frc::SpeedControllerGroup m_right{m_flontRight,m_rearRight};
   frc::DifferentialDrive m_robotDrive{m_left,m_right};
   
-  frc::PWMVictorSPX m_rightShot{4};
+  //カーゴ
+  frc::PWMVictorSPX m_shotRight{4};
+  frc::PWMVictorSPX m_shotLeft{5};
+  frc::SpeedControllerGroup m_shot{m_shotRight,m_shotLeft};
 
+  //
   frc::DoubleSolenoid sole0{0,1};
 
   frc::Solenoid sole1{2};
@@ -56,6 +62,7 @@ class Robot : public frc::TimedRobot {
 
   frc::DigitalInput pin0{0};
 
-  frc::Joystick m_stick{2};
+  //コントローラー
+  frc::XboxController m_controller{2};
   frc::Timer m_timer;
 };
