@@ -97,9 +97,13 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic()
 {
-  //m_robotDrive.ArcadeDrive(m_stick.GetY(), m_stick.GetX());
+  //m_robotDrive.ArcadeDrive(-m_stick.GetY()*0.35, m_stick.GetX()*0.35);
+
+  m_rightShot.Set(m_stick.GetY()*0.50);
+
+  /*
   if(m_stick.GetY()>0.5){
-    sole1.Set(true);
+    //sole1.Set(true);
     //sole0.Set(frc::DoubleSolenoid::Value::kForward);
   }else if(m_stick.GetY()<-0.5){
     sole1.Set(false);
@@ -113,7 +117,7 @@ void Robot::TeleopPeriodic()
   }else if(m_stick.GetX()<-0.5){
     com.SetClosedLoopControl(false);
   }
-
+*/
 }
 
 void Robot::TestPeriodic()

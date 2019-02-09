@@ -46,6 +46,8 @@ class Robot : public frc::TimedRobot {
   frc::SpeedControllerGroup m_right{m_flontRight,m_rearRight};
   frc::DifferentialDrive m_robotDrive{m_left,m_right};
   
+  frc::PWMVictorSPX m_rightShot{4};
+
   frc::DoubleSolenoid sole0{0,1};
 
   frc::Solenoid sole1{2};
