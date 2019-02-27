@@ -23,6 +23,8 @@ void Robot::RobotInit()
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   m_shotLeft.SetInverted(true);
+  m_armLeft.SetInverted(true);
+  frc::CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 /**
@@ -74,7 +76,7 @@ void Robot::AutonomousPeriodic()
   else
   {
     com.SetClosedLoopControl(false);
-    sole0.Set(frc::DoubleSolenoid::Value::kReverse);
+    //sole0.Set(frc::DoubleSolenoid::Value::kReverse);
     //m_robotDrive.ArcadeDrive(0.0, 0.0);
   }
 
@@ -93,15 +95,53 @@ void Robot::AutonomousPeriodic()
 }
 
 void Robot::TeleopInit() {
-  com.SetClosedLoopControl(false);
+  com.SetClosedLoopControl(true);
 }
 
 void Robot::TeleopPeriodic()
 {
-  //m_robotDrive.ArcadeDrive(-m _controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*0.35, m_controller.GetX(frc::XboxController::JoystickHand::kLeftHand)*0.35);
+  m_robotDrive.ArcadeDrive(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*0.35, m_controller.GetX(frc::XboxController::JoystickHand::kLeftHand)*0.45);
+  if(m_controller.GetStartButton()){
+    m_rearTire.Set(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*0.35);
+  }else{
+    m_rearTire.Set(0);
+  }
 
-  m_shotRight.Set(m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*0.80);
+  m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.30);
+  
+  if(m_controller.GetAButton()){
+    m_shot.Set(1.00);
+  }else if(m_controller.GetBButton()){
+    m_shot.Set(-0.3);
+  }else{
+    m_shot.Set(0);
+  }
 
+  if(m_controller.GetXButton()){
+    m_up.Set(0.3);
+  }else if(m_controller.GetYButton()){
+    m_up.Set(-0.3);
+  }else{
+    m_up.Set(0);
+  }
+
+  if(m_controller.GetStickButtonPressed(frc::XboxController::JoystickHand::kRightHand)){
+    jointFlag = true;
+    jointLeft.Set(true);
+    jointRight.Set(true);
+  }else if(m_controller.GetStickButtonPressed(frc::XboxController::JoystickHand::kLeftHand)){
+    jointFlag = false;
+    jointLeft.Set(false);
+    jointRight.Set(false);
+  }
+
+  if(m_controller.GetBumper(frc::XboxController::JoystickHand::kRightHand)){
+    pushLeft.Set(true);
+    pushRight.Set(true);
+  }else if(m_controller.GetBumper(frc::XboxController::JoystickHand::kLeftHand)){
+    pushLeft.Set(false);
+    pushRight.Set(false);
+  }
   /*
   if(m_controller.GetY()>0.5){
     //sole1.Set(true);
