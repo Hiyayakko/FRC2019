@@ -21,7 +21,7 @@
 #include <frc/Compressor.h>
 #include <frc/DigitalInput.h>
 #include <frc/XboxController.h>
-
+#include <frc/Encoder.h>
 //camera
 #include <cameraserver/CameraServer.h>
 //#include <cs/cscore_oo.h>
@@ -85,6 +85,10 @@ class Robot : public frc::TimedRobot {
 
   
   frc::Compressor com{0};
+
+
+  frc::Encoder *encdrArm = new frc::Encoder(0,1,false,frc::Encoder::EncodingType::k4X);
+
 
   frc::DigitalInput pin0{0};
 

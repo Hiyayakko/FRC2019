@@ -107,7 +107,7 @@ void Robot::TeleopPeriodic()
     m_rearTire.Set(0);
   }
 
-  m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.30);
+  m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.40);
   
   if(m_controller.GetAButton()){
     m_shot.Set(1.00);
