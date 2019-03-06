@@ -7,8 +7,6 @@
 
 #include "Robot.h"
 
-#include <iostream>
-
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Robot::Robot()
@@ -25,6 +23,19 @@ void Robot::RobotInit()
   m_shotLeft.SetInverted(true);
   m_armLeft.SetInverted(true);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  //encoder setting
+  encdrArm->SetMaxPeriod(0.1);
+  encdrArm->SetMinRate(10);
+  encdrArm->SetDistancePerPulse(1);
+  encdrArm->SetReverseDirection(false);
+  encdrArm->SetSamplesToAverage(7);
+  //PID
+  PIDArm->SetInputRange(-20,20);
+  PIDArm->SetOutputRange(-1.00,1.00);
+  PIDArm->SetTolerance(5);
+  PIDArm->SetSetpoint(0);
+  
+  
 }
 
 /**
@@ -64,26 +75,14 @@ void Robot::AutonomousInit()
   {
     // Default Auto goes here
   }
+  PIDArm->Enable();
+  PIDArm->Reset();
 }
 
 void Robot::AutonomousPeriodic()
 {
-  if (m_timer.Get() < 10.0)
-  {
-    com.SetClosedLoopControl(true);
-    //m_robotDrive.ArcadeDrive(-0.5, 0.0);
-  }
-  else
-  {
-    com.SetClosedLoopControl(false);
-    //sole0.Set(frc::DoubleSolenoid::Value::kReverse);
-    //m_robotDrive.ArcadeDrive(0.0, 0.0);
-  }
-
-  if(pin0.Get() == false){
-      std::cout << "googogogo" << std::endl;
-  }
-
+  std::cout << encdrArm->Get() << std::endl;
+  PIDArm->PIDWrite(10);
   if (m_autoSelected == kAutoNameCustom)
   {
     // Custom Auto goes here

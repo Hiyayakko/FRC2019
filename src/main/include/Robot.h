@@ -7,7 +7,9 @@
 
 #pragma once
 
+#include <iostream>
 #include <string>
+#include <memory>
 
 #include <frc/TimedRobot.h>
 #include <frc/Joystick.h>
@@ -22,6 +24,9 @@
 #include <frc/DigitalInput.h>
 #include <frc/XboxController.h>
 #include <frc/Encoder.h>
+#include <frc/PIDController.h>
+
+
 //camera
 #include <cameraserver/CameraServer.h>
 //#include <cs/cscore_oo.h>
@@ -48,30 +53,31 @@ class Robot : public frc::TimedRobot {
 
 /*モーター*/
   //足回り
-  frc::PWMVictorSPX m_flontLeft{0};
-  frc::PWMVictorSPX m_rearLeft{1};
+  frc::PWMVictorSPX m_flontLeft{6};
+  frc::PWMVictorSPX m_rearLeft{5};
   frc::SpeedControllerGroup m_left{m_flontLeft,m_rearLeft};
-  frc::PWMVictorSPX m_flontRight{2};
-  frc::PWMVictorSPX m_rearRight{3};
+  frc::PWMVictorSPX m_flontRight{0};
+  frc::PWMVictorSPX m_rearRight{1};
   frc::SpeedControllerGroup m_right{m_flontRight,m_rearRight};
 
   frc::DifferentialDrive m_robotDrive{m_left,m_right};
   
   //カーゴ
-  frc::PWMVictorSPX m_shotRight{4};
-  frc::PWMVictorSPX m_shotLeft{5};//invert
+  frc::PWMVictorSPX m_shotRight{8};
+  frc::PWMVictorSPX m_shotLeft{9};//invert
 
   frc::SpeedControllerGroup m_shot{m_shotRight,m_shotLeft};
 
   //後方上昇
-  frc::PWMVictorSPX m_up{6};
+  frc::PWMVictorSPX m_up{4};
 
   //後方タイヤ
-  frc::PWMVictorSPX m_rearTire{7};
+  frc::PWMVictorSPX m_rearTire{3};
 
   //アーム
-  frc::PWMVictorSPX m_armRight{8};
-  frc::PWMVictorSPX m_armLeft{9};//invert
+  frc::PWMVictorSPX m_armRight{2};
+  frc::PWMVictorSPX m_armLeft{7};//invert
+  //std::unique_ptr<frc::PWMVictorSPX> m_armLeft = std::make_unique<frc::PWMVictorSPX>(9);
 
   frc::SpeedControllerGroup m_arm{m_armRight,m_armLeft};
 
@@ -87,9 +93,9 @@ class Robot : public frc::TimedRobot {
   frc::Compressor com{0};
 
 
-  frc::Encoder *encdrArm = new frc::Encoder(0,1,false,frc::Encoder::EncodingType::k4X);
-
-
+  std::unique_ptr<frc::Encoder> encdrArm = std::make_unique<frc::Encoder>(0,1,false,frc::Encoder::EncodingType::k4X);
+  std::unique_ptr<frc::PIDController> PIDArm = std::make_unique<frc::PIDController>(0.5,0.5,0.0,*encdrArm,m_armLeft,0.05);
+  
   frc::DigitalInput pin0{0};
 
   //コントローラー
