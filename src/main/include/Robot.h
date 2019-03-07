@@ -50,7 +50,7 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
 
   bool jointFlag{false};
-
+  double DriveSpeed{0.35};
 /*モーター*/
   //足回り
   frc::PWMVictorSPX m_flontLeft{6};
@@ -94,7 +94,7 @@ class Robot : public frc::TimedRobot {
 
   frc::Encoder encdrArm{0,1,false,frc::Encoder::EncodingType::k4X};
   //std::unique_ptr<frc::Encoder> encdrArm = std::make_unique<frc::Encoder>(0,1,false,frc::Encoder::EncodingType::k4X);
-  std::unique_ptr<frc::PIDController> PIDArm = std::make_unique<frc::PIDController>(0.3,0.3,0.0,0.3,encdrArm,m_armLeft,0.05);
+  std::unique_ptr<frc::PIDController> PIDArm = std::make_unique<frc::PIDController>(0.05,0.35,0.01,encdrArm,m_armLeft,0.05);
   
   frc::DigitalInput pin0{0};
 
@@ -102,7 +102,5 @@ class Robot : public frc::TimedRobot {
   frc::XboxController m_controller{2};
 
   frc::Timer m_timer;
-
-  //frc::CameraServer cam0;
 
 };

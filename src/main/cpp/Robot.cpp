@@ -27,11 +27,11 @@ void Robot::RobotInit()
   encdrArm.SetMaxPeriod(0.1);
   encdrArm.SetMinRate(10);
   encdrArm.SetDistancePerPulse(1);
-  encdrArm.SetReverseDirection(false);
+  encdrArm.SetReverseDirection(true);
   encdrArm.SetSamplesToAverage(7);
   //PID
   PIDArm->SetOutputRange(-0.50,0.50);
-  PIDArm->SetPercentTolerance(5);
+  PIDArm->SetPercentTolerance(1000);
   PIDArm->SetSetpoint(0);
   
   
@@ -94,10 +94,13 @@ void Robot::AutonomousPeriodic()
   }
   if(m_timer.Get() < 5){
     PIDArm->PIDWrite(0);
-  }else if(m_timer.Get() < 10){
-    PIDArm->PIDWrite(10);
+    std::cout << "first" << std::endl;
+  }else if(m_timer.Get() < 15){
+    PIDArm->PIDWrite(1000);
+    std::cout << "second" << std::endl;
   }else{
-    PIDArm->PIDWrite(0);
+    PIDArm->PIDWrite(1500);
+    std::cout << "third" << std::endl;
   }
 }
 
@@ -107,9 +110,9 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic()
 {
-  m_robotDrive.ArcadeDrive(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*0.35, m_controller.GetX(frc::XboxController::JoystickHand::kLeftHand)*0.45);
+  m_robotDrive.ArcadeDrive(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*DriveSpeed, m_controller.GetX(frc::XboxController::JoystickHand::kLeftHand)*DriveSpeed*1.2);
   if(m_controller.GetStartButton()){
-    m_rearTire.Set(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*0.35);
+    m_rearTire.Set(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*DriveSpeed);
   }else{
     m_rearTire.Set(0);
   }
@@ -117,11 +120,11 @@ void Robot::TeleopPeriodic()
   m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.40);
   
   if(m_controller.GetAButton()){
-    m_shot.Set(1.00);
+    DriveSpeed = 0.2;
   }else if(m_controller.GetBButton()){
-    m_shot.Set(-0.3);
+    DriveSpeed = 0.6;
   }else{
-    m_shot.Set(0);
+    DriveSpeed = 0.35;
   }
 
   if(m_controller.GetXButton()){
