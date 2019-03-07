@@ -92,9 +92,9 @@ class Robot : public frc::TimedRobot {
   
   frc::Compressor com{0};
 
-
-  std::unique_ptr<frc::Encoder> encdrArm = std::make_unique<frc::Encoder>(0,1,false,frc::Encoder::EncodingType::k4X);
-  std::unique_ptr<frc::PIDController> PIDArm = std::make_unique<frc::PIDController>(0.5,0.5,0.0,*encdrArm,m_armLeft,0.05);
+  frc::Encoder encdrArm{0,1,false,frc::Encoder::EncodingType::k4X};
+  //std::unique_ptr<frc::Encoder> encdrArm = std::make_unique<frc::Encoder>(0,1,false,frc::Encoder::EncodingType::k4X);
+  std::unique_ptr<frc::PIDController> PIDArm = std::make_unique<frc::PIDController>(0.3,0.3,0.0,0.3,encdrArm,m_armLeft,0.05);
   
   frc::DigitalInput pin0{0};
 

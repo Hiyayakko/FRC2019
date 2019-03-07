@@ -24,15 +24,14 @@ void Robot::RobotInit()
   m_armLeft.SetInverted(true);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   //encoder setting
-  encdrArm->SetMaxPeriod(0.1);
-  encdrArm->SetMinRate(10);
-  encdrArm->SetDistancePerPulse(1);
-  encdrArm->SetReverseDirection(false);
-  encdrArm->SetSamplesToAverage(7);
+  encdrArm.SetMaxPeriod(0.1);
+  encdrArm.SetMinRate(10);
+  encdrArm.SetDistancePerPulse(1);
+  encdrArm.SetReverseDirection(false);
+  encdrArm.SetSamplesToAverage(7);
   //PID
-  PIDArm->SetInputRange(-20,20);
-  PIDArm->SetOutputRange(-1.00,1.00);
-  PIDArm->SetTolerance(5);
+  PIDArm->SetOutputRange(-0.50,0.50);
+  PIDArm->SetPercentTolerance(5);
   PIDArm->SetSetpoint(0);
   
   
@@ -75,14 +74,16 @@ void Robot::AutonomousInit()
   {
     // Default Auto goes here
   }
+  com.SetClosedLoopControl(false);
   PIDArm->Enable();
-  PIDArm->Reset();
+  //PIDArm->Reset();
 }
 
 void Robot::AutonomousPeriodic()
 {
-  std::cout << encdrArm->Get() << std::endl;
-  PIDArm->PIDWrite(10);
+  std::cout << encdrArm.Get() << std::endl;
+  //std::cout << PIDArm->IsEnabled() << std::endl;
+  
   if (m_autoSelected == kAutoNameCustom)
   {
     // Custom Auto goes here
@@ -90,6 +91,13 @@ void Robot::AutonomousPeriodic()
   else
   {
     // Default Auto goes here
+  }
+  if(m_timer.Get() < 5){
+    PIDArm->PIDWrite(0);
+  }else if(m_timer.Get() < 10){
+    PIDArm->PIDWrite(10);
+  }else{
+    PIDArm->PIDWrite(0);
   }
 }
 
@@ -137,7 +145,7 @@ void Robot::TeleopPeriodic()
   if(m_controller.GetBumper(frc::XboxController::JoystickHand::kRightHand)){
     pushLeft.Set(true);
     pushRight.Set(true);
-  }else if(m_controller.GetBumper(frc::XboxController::JoystickHand::kLeftHand)){
+  }else{
     pushLeft.Set(false);
     pushRight.Set(false);
   }
