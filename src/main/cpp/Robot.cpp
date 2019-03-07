@@ -30,8 +30,9 @@ void Robot::RobotInit()
   encdrArm.SetReverseDirection(true);
   encdrArm.SetSamplesToAverage(7);
   //PID
+  PIDArm->SetInputRange(-100,3000);
   PIDArm->SetOutputRange(-0.50,0.50);
-  PIDArm->SetPercentTolerance(1000);
+  PIDArm->SetPercentTolerance(10);
   PIDArm->SetSetpoint(0);
   
   
@@ -101,6 +102,12 @@ void Robot::AutonomousPeriodic()
   }else{
     PIDArm->PIDWrite(1500);
     std::cout << "third" << std::endl;
+  }
+  std::cout << "ontarget" << PIDArm->OnTarget() << std::endl;
+  if(PIDArm->OnTarget() && PIDArm->IsEnabled()){
+    PIDArm->Disable();
+  }else if(!PIDArm->OnTarget() && !PIDArm->IsEnabled()){
+    PIDArm->Enable();
   }
 }
 
