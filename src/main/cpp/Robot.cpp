@@ -27,12 +27,12 @@ void Robot::RobotInit()
   encdrArm.SetMaxPeriod(0.1);
   encdrArm.SetMinRate(10);
   encdrArm.SetDistancePerPulse(1);
-  encdrArm.SetReverseDirection(true);
+  encdrArm.SetReverseDirection(false);
   encdrArm.SetSamplesToAverage(7);
   //PID
-  PIDArm->SetInputRange(-100,3000);
-  PIDArm->SetOutputRange(-0.50,0.50);
-  PIDArm->SetPercentTolerance(10);
+  PIDArm->SetInputRange(-1200,100);
+  PIDArm->SetOutputRange(-1.00,1.00);
+  PIDArm->SetPercentTolerance(3);
   PIDArm->SetSetpoint(0);
   
   
@@ -75,8 +75,8 @@ void Robot::AutonomousInit()
   {
     // Default Auto goes here
   }
-  com.SetClosedLoopControl(false);
-  PIDArm->Enable();
+  com.SetClosedLoopControl(true);
+  //PIDArm->Enable();
   //PIDArm->Reset();
 }
 
@@ -84,7 +84,8 @@ void Robot::AutonomousPeriodic()
 {
   std::cout << encdrArm.Get() << std::endl;
   //std::cout << PIDArm->IsEnabled() << std::endl;
-  
+  m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.40);
+
   if (m_autoSelected == kAutoNameCustom)
   {
     // Custom Auto goes here
@@ -94,13 +95,13 @@ void Robot::AutonomousPeriodic()
     // Default Auto goes here
   }
   if(m_timer.Get() < 5){
-    PIDArm->PIDWrite(0);
+    PIDArm->PIDWrite(-500);
     std::cout << "first" << std::endl;
-  }else if(m_timer.Get() < 15){
-    PIDArm->PIDWrite(1000);
+  }else if(m_timer.Get() < 20){
+    PIDArm->PIDWrite(-1000);
     std::cout << "second" << std::endl;
   }else{
-    PIDArm->PIDWrite(1500);
+    //PIDArm->PIDWrite(0);
     std::cout << "third" << std::endl;
   }
   std::cout << "ontarget" << PIDArm->OnTarget() << std::endl;
@@ -108,6 +109,16 @@ void Robot::AutonomousPeriodic()
     PIDArm->Disable();
   }else if(!PIDArm->OnTarget() && !PIDArm->IsEnabled()){
     PIDArm->Enable();
+  }
+
+  if(m_controller.GetStickButtonPressed(frc::XboxController::JoystickHand::kRightHand)){
+    jointFlag = true;
+    jointLeft.Set(true);
+    jointRight.Set(true);
+  }else if(m_controller.GetStickButtonPressed(frc::XboxController::JoystickHand::kLeftHand)){
+    jointFlag = false;
+    jointLeft.Set(false);
+    jointRight.Set(false);
   }
 }
 
@@ -123,8 +134,22 @@ void Robot::TeleopPeriodic()
   }else{
     m_rearTire.Set(0);
   }
-
-  m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.40);
+  if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)>0.5 && IsArmGe && !ArmFlag){
+    ArmFlag = true;
+    IsArmGe = false;
+    IsArmChu = true;
+    IsArmJou = false;
+    //PIDArm->PIDWrite();
+  }else if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)>0.5 && IsArmChu && !ArmFlag){
+    ArmFlag = true;
+    IsArmGe = false;
+    IsArmChu = false;
+    IsArmJou = true;
+    //PIDArm->PIDWrite();
+  }else if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)<0.5 && ArmFlag){
+    ArmFlag = false;
+  }
+  //m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.40);
   
   if(m_controller.GetAButton()){
     DriveSpeed = 0.2;
