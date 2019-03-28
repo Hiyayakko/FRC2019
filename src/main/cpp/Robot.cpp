@@ -59,6 +59,11 @@ void Robot::RobotPeriodic() {}
  * if-else structure below with additional strings. If using the SendableChooser
  * make sure to add them to the chooser code above as well.
  */
+
+/*
+自動初期設定:"FRC Driver Station"で、"Autonomous"を"enable"にした時に一度だけ実行される。
+*/
+
 void Robot::AutonomousInit()
 {
   m_autoSelected = m_chooser.GetSelected();
@@ -80,6 +85,7 @@ void Robot::AutonomousInit()
   //PIDArm->Reset();
 }
 
+//自動初期設定:"FRC Driver Station"で、"Autonomous"を"enable"にした時に"AutomasInit()"を実行したあとに"disable"されるまで繰り返し実行される。
 void Robot::AutonomousPeriodic()
 {
   std::cout << encdrArm.Get() << std::endl;
