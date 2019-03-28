@@ -50,10 +50,12 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
 
   bool jointFlag{false};
+  bool jointCount{false};
   bool IsArmGe{true};
   bool IsArmChu{false};
   bool IsArmJou{false};
   bool ArmFlag{false};
+  int ArmState{0};
   double DriveSpeed{0.35};
 /*モーター*/
   //足回り
