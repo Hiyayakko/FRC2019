@@ -65,7 +65,9 @@ void Robot::RobotPeriodic() {}
 */
 
 void Robot::AutonomousInit()
-{/*
+{
+  Robot::TeleopInit();
+  /*
   m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
   //     kAutoNameDefault);
@@ -88,7 +90,6 @@ void Robot::AutonomousInit()
 //自動初期設定:"FRC Driver Station"で、"Autonomous"を"enable"にした時に"AutomasInit()"を実行したあとに"disable"されるまで繰り返し実行される。
 void Robot::AutonomousPeriodic()
 {
-  Robot::TeleopInit();
   Robot::TeleopPeriodic();
 /*
   std::cout << encdrArm.Get() << std::endl;
