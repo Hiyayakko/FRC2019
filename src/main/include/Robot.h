@@ -100,7 +100,7 @@ class Robot : public frc::TimedRobot {
 
   frc::Encoder encdrArm{0,1,false,frc::Encoder::EncodingType::k4X};
   //std::unique_ptr<frc::Encoder> encdrArm = std::make_unique<frc::Encoder>(0,1,false,frc::Encoder::EncodingType::k4X);
-  std::unique_ptr<frc::PIDController> PIDArm = std::make_unique<frc::PIDController>(0.7,0.3,0.1,0.3,encdrArm,m_arm,0.05);
+  std::unique_ptr<frc::PIDController> PIDArm = std::make_unique<frc::PIDController>(0.2,0.3,0.1,0.3,encdrArm,m_arm,0.05);
   
   frc::DigitalInput pin0{0};
 

@@ -9,6 +9,8 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include <stdio.h>
+
 Robot::Robot()
 {
   m_robotDrive.SetExpiration(0.1);
@@ -90,7 +92,13 @@ void Robot::AutonomousInit()
 //自動初期設定:"FRC Driver Station"で、"Autonomous"を"enable"にした時に"AutomasInit()"を実行したあとに"disable"されるまで繰り返し実行される。
 void Robot::AutonomousPeriodic()
 {
-  Robot::TeleopPeriodic();
+  if(PIDArm->OnTarget() && PIDArm->IsEnabled()){
+    PIDArm->Disable();
+  }else if(!PIDArm->OnTarget() && !PIDArm->IsEnabled()){
+    PIDArm->Enable();
+  }
+  PIDArm->PIDWrite(-300);
+  //Robot::TeleopPeriodic();
 /*
   std::cout << encdrArm.Get() << std::endl;
   //std::cout << PIDArm->IsEnabled() << std::endl;
@@ -138,6 +146,9 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic()
 {
+  m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.3);
+  std::cout << encdrArm.Get() << std::endl;
+  /*
 //PID ontarget
   if(PIDArm->OnTarget() && PIDArm->IsEnabled()){
     PIDArm->Disable();
@@ -157,14 +168,17 @@ void Robot::TeleopPeriodic()
     ArmFlag = true;
     if(ArmState < 2){
       ArmState++;
+      printf("jo\n");
     }
-  }else if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)>0.5 && !ArmFlag){
+  }else if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)<-0.5 && !ArmFlag){
     ArmFlag = true;
   if(ArmState > 0){
       ArmState--;
+      printf("ge\n");
     }
-  }else if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)<0.5 && ArmFlag){
+  }else if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)<0.5 && m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)>-0.5 && ArmFlag){
     ArmFlag = false;
+    printf("bebebe\n");
   }
   if(ArmState == 0){
     PIDArm->PIDWrite(0);
@@ -220,7 +234,7 @@ if(m_controller.GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) > 
 //後ろタイヤ上下
   if(m_controller.GetXButton()){
     m_up.Set(0.3);
-  }else if(m_controller.GetYButton()){
+  `}else if(m_controller.GetYButton()){
     m_up.Set(-0.3);
   }else{
     m_up.Set(0);
