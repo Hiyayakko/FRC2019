@@ -33,8 +33,8 @@ void Robot::RobotInit()
   encdrArm.SetSamplesToAverage(7);
   //PID
   PIDArm->SetInputRange(-1200,100);
-  PIDArm->SetOutputRange(-1.00,1.00);
-  PIDArm->SetPercentTolerance(3);
+  PIDArm->SetOutputRange(-0.30,0.30);
+  PIDArm->SetPercentTolerance(3);//0
   PIDArm->SetSetpoint(0);
   
   
@@ -91,14 +91,15 @@ void Robot::AutonomousInit()
 
 //自動初期設定:"FRC Driver Station"で、"Autonomous"を"enable"にした時に"AutomasInit()"を実行したあとに"disable"されるまで繰り返し実行される。
 void Robot::AutonomousPeriodic()
-{
+{/*
   if(PIDArm->OnTarget() && PIDArm->IsEnabled()){
     PIDArm->Disable();
   }else if(!PIDArm->OnTarget() && !PIDArm->IsEnabled()){
     PIDArm->Enable();
   }
   PIDArm->PIDWrite(-300);
-  //Robot::TeleopPeriodic();
+  std::cout << encdrArm.Get() << std::endl;*/
+  Robot::TeleopPeriodic();
 /*
   std::cout << encdrArm.Get() << std::endl;
   //std::cout << PIDArm->IsEnabled() << std::endl;
@@ -146,9 +147,9 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic()
 {
-  m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.3);
-  std::cout << encdrArm.Get() << std::endl;
-  /*
+  //m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.3);
+  //std::cout << encdrArm.Get() << std::endl;
+  
 //PID ontarget
   if(PIDArm->OnTarget() && PIDArm->IsEnabled()){
     PIDArm->Disable();
@@ -156,15 +157,21 @@ void Robot::TeleopPeriodic()
     PIDArm->Enable();
   }
 //足回り前後回転
-  m_robotDrive.ArcadeDrive(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*DriveSpeed, m_controller.GetX(frc::XboxController::JoystickHand::kLeftHand)*DriveSpeed*1.2);
+  m_robotDrive.ArcadeDrive(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*DriveSpeed, m_controller.GetX(frc::XboxController::JoystickHand::kLeftHand)*DriveSpeed*0.85);
 //アームエアー伸ばし
   if(m_controller.GetStickButton(frc::XboxController::JoystickHand::kLeftHand)){
     m_rearTire.Set(-m_controller.GetY(frc::XboxController::JoystickHand::kLeftHand)*DriveSpeed);
   }else{
     m_rearTire.Set(0);
   }
+//アーム上下
+  if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)>0.5){
+    PIDArm->PIDWrite(-50);
+  }else if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)<-0.5){
+    PIDArm->PIDWrite(-500);
+  }
 //アーム上中下
-  if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)>0.5 && !ArmFlag){
+/*  if(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)>0.5 && !ArmFlag){
     ArmFlag = true;
     if(ArmState < 2){
       ArmState++;
@@ -186,32 +193,36 @@ void Robot::TeleopPeriodic()
     PIDArm->PIDWrite(-500);
   }else if(ArmState == 2){
     PIDArm->PIDWrite(-1000);
-  }
+  }*/
   //m_arm.Set(m_controller.GetY(frc::XboxController::JoystickHand::kRightHand)*0.40);
 
 //加速、減速  
   if(m_controller.GetAButton()){
-    DriveSpeed = 0.2;
-  }else if(m_controller.GetBButton()){
-    DriveSpeed = 0.6;
-  }else{
     DriveSpeed = 0.35;
+  }else if(m_controller.GetBButton()){
+    DriveSpeed = 0.9;
+  }else{
+    DriveSpeed = 0.6;
   }
 
 //アームエアー伸ばし
-  if(m_controller.GetStickButton(frc::XboxController::JoystickHand::kRightHand) && !jointFlag && !jointCount){
-    jointFlag = true;
+if(m_controller.GetStickButton(frc::XboxController::JoystickHand::kRightHand)){
+  if(jointCount && !jointFlag){
     jointLeft.Set(true);
     jointRight.Set(true);
-    jointCount = true;
-  }else if(m_controller.GetStickButton(frc::XboxController::JoystickHand::kRightHand) && !jointFlag && jointCount){
     jointFlag = true;
+    printf("a");
+  }else if(!jointCount && !jointFlag){
     jointLeft.Set(false);
     jointRight.Set(false);
-    jointCount = false;
-  }else if(!m_controller.GetStickButton(frc::XboxController::JoystickHand::kLeftHand) && jointFlag){
-    jointFlag = false;
+    jointFlag = true;
+    printf("b");
   }
+}else if(!m_controller.GetStickButton(frc::XboxController::JoystickHand::kRightHand) && jointFlag){
+  jointCount = !jointCount;
+  jointFlag = false;
+  printf("c");
+}
 
 //カーゴ回収発射
 if(m_controller.GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) > 0.3){
@@ -233,9 +244,9 @@ if(m_controller.GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) > 
 
 //後ろタイヤ上下
   if(m_controller.GetXButton()){
-    m_up.Set(0.3);
-  `}else if(m_controller.GetYButton()){
-    m_up.Set(-0.3);
+    m_up.Set(0.4);
+  }else if(m_controller.GetYButton()){
+    m_up.Set(-0.4);
   }else{
     m_up.Set(0);
   }
