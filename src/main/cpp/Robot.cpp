@@ -198,7 +198,7 @@ void Robot::TeleopPeriodic()
 
 //加速、減速  
   if(m_controller.GetAButton()){
-    DriveSpeed = 0.35;
+    DriveSpeed = 0.4;
   }else if(m_controller.GetBButton()){
     DriveSpeed = 0.9;
   }else{
